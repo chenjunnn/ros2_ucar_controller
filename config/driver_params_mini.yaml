@@ -1,0 +1,35 @@
+/ucar_controller:
+  ros__parameters:
+    # 串口设备名，在startup_scripts的脚本中已经将底盘的串口链接为/dev/base_serial_port
+    port: /dev/base_serial_port
+    # 串口波特率，晓mini的版本因为加了imu数据所以用了更高的921600
+    baud: 921600
+    # 底盘坐标系名
+    base_frame: base_link
+    # 里程计坐标系名
+    odom_frame: odom                    
+    # 里程计话题名
+    odom_topic: /wheel_odom
+    # 左右轮距与前后轮距之和的均值，用于解算旋转时的角速度
+    wheel_avg_distance: 0.2258 # 原来是0.2169，第一次校准用0.2196，第二次校准用0.2263，第三次用0.2258
+    # 轮半径
+    wheel_radius: 0.04894 # 0.04657，第一次校准用0.4670
+
+    vy_coefficient: 1.007 # 0.975
+
+    # 订阅的速度话题。向这个话题发布20Hz的速度指令即可以控制小车移动
+    vel_topic: /cmd_vel 
+    # 是否提供 base_frame <- odom_frame 的坐标变换
+    provide_odom_tf: false
+    # cmd指令超时时间（单位：s）。即距离上一个 vel_topic 的多久以后自动停止运动，防止意外断连后持续冲撞
+    cmd_timeout: 0.2
+    # 串口超时（单位：ms，不宜改动）
+    serial_timeout: 50
+    # 底盘最大线速度，用于限制底盘的最大平移速度（单位：m/s，有效范围:(0,1.0]）。电机本身可达到的的最大速度为1m/s左右，这里给的3.0意为不进行额外限速，根据自己需要调节
+    linear_speed_max:  13.0
+    # 底盘最大角速度，用于限制底盘的最大旋转速度（单位：rad/s）。由电机可达到的实际最大速度导致的最大角速度可由底盘运动学模型推算，根据自己需要调节
+    angular_speed_max: 13.14
+    # 智能驾驶小车记录行驶里程的文件名。该文件持续记录小车电机的行驶里程
+    Mileage_file_name:  car_Mileage_info.txt
+    # 是否打印ROS的log。
+    debug_log:  false         
